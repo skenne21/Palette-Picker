@@ -1,15 +1,23 @@
+// this sets up the server using express
 const express = require('express');
+// this defines the varible app that initials the server with the express varible
 const app = express();
+
 const bodyParser = require('body-parser');
+// this sets the enviroment pf the code, either it will be the process.env.NODE_ENV, which could be for production or testing or it is a default to the 'development' enviroment
 const enviroment = process.env.NODE_ENV || 'development';
+// based on the enviroment we will configuration  the database from knexfile.js with the enviroment 
 const configuration = require('./knexfile')[enviroment];
+// we conncent the database to the knex with the confuguration of the knexfile
 const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
 
+// allows server to get parsed json from the body 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+
+
 app.use(express.static('public'));
 
 app.get('/', (request, response) => {
